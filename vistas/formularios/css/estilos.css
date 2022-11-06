@@ -1,0 +1,39 @@
+
+/* Estilo que se le da a todos los input de las vistas */
+input {
+	text-transform: uppercase;
+}
+/* Estilo que se le da a todos los textarea de las vistas */
+textarea{
+	text-transform: uppercase;
+}
+
+/*-------------------------------------------------------------------------------------------------------
+	Estilo para que la caja de texto con el nombre txtUrl no transforme el texto en mayusculas para que
+	no cause confucion al momento de crear las rutas de los archivos.
+-------------------------------------------------------------------------------------------------------*/
+input[name="txtUrl"]{
+	text-transform:none;
+}
+
+.bg-white
+{
+	background: #FFFFFF;
+}
+
+.listado{
+	/* min-height:200px; */
+}
+
+.seccion__subtitulo{
+	font-size: 1.4rem;
+}
+
+.seccion__subtitulo i{
+    position: absolute;
+    right: 1rem;
+    top: .7rem;
+}
+.seccion__subtitulo hr{
+	margin-top: 0;
+}

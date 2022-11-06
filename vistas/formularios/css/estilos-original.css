@@ -1,0 +1,175 @@
+
+/* Estilo que se le da a todos los input de las vistas */
+input {
+	text-transform: uppercase;
+}
+/* Estilo que se le da a todos los textarea de las vistas */
+textarea{
+	text-transform: uppercase;
+}
+
+/*-------------------------------------------------------------------------------------------------------
+	Estilo para que la caja de texto con el nombre txtUrl no transforme el texto en mayusculas para que
+	no cause confucion al momento de crear las rutas de los archivos.
+-------------------------------------------------------------------------------------------------------*/
+input[name="txtUrl"]{
+	text-transform:none;
+}
+
+.margenes_botones{
+	/*padding-left: 0px;
+	padding-right: 0;*/
+	margin-right: 3px;
+}
+
+.listado{
+	/*min-height:200px;*/
+}
+
+.ocultar{
+	display:none;
+}
+
+.mostrar{
+	display:block;
+}
+
+
+/*-------------------------------------------------------------------------------------------------------
+	Estilo para los checkbox
+-------------------------------------------------------------------------------------------------------*/
+
+.radio label,
+.checkbox label
+{
+	font-weight: bolder;
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	padding: 5px 15px 5px 51px;
+	border-radius: 5px;
+	-webkit-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+
+.radio label:hover,
+.checkbox label:hover
+{
+	background: rgba(60, 141, 188, 0.1);
+}
+
+
+.radio label:before,
+.checkbox label:before
+{
+	content: "";
+	display: inline-block;
+	width: 17px;
+	height: 17px;
+	position: absolute;
+	left: 15px;
+	border-radius: 50%;
+	background: none;
+	border: 3px solid #3c8dbc;
+}
+
+.radio label:disabled ,
+.checkbox label:disabled
+{
+	/*background: rgba(60, 141, 188, 0.1);*/
+	
+}
+
+input[type="radio"] 
+{
+	display: none;
+}
+
+input[type="radio"]:checked + label:before
+{
+	display: none;
+}
+input[type="radio"]:checked + label
+{
+	padding: 5px 15px;
+	background: #3c8dbc;
+	border-radius: 2px;
+	color: #fff;
+}
+
+.checkbox label:before 
+{
+	border-radius: 3px;
+}
+.checkbox input[type="checkbox"] {
+	display: none;
+}
+.checkbox input[type="checkbox"]:checked + label:before {
+	display: none;
+}
+.checkbox input[type="checkbox"]:checked + label {
+	background: #3c8dbc;
+	color: #fff;
+	padding: 5px 15px;
+}
+
+
+.radio input[type="radio"]:disabled + label,
+.checkbox input[type="checkbox"]:disabled + label
+{
+	cursor: not-allowed;
+	color: #999999;
+}
+
+.radio input[type="radio"]:disabled:checked + label,
+.checkbox input[type="checkbox"]:disabled:checked + label
+{
+	color: #FFF;
+	opacity: 0.65;
+}
+
+.radio input[type="radio"]:disabled + label:before,
+.checkbox input[type="checkbox"]:disabled + label:before
+{
+	border: 3px solid #999999;
+}
+
+.checkbox input[type="checkbox"]:disabled + label:before
+{
+	border-radius: 3px;
+}
+
+.disponible_usuario_si
+{
+	color:#3C0;
+}
+.disponible_usuario_no
+{
+	color:#F00;
+}
+
+.tabla_fija {
+	table-layout:fixed;
+}
+
+.th-md{
+	width:180px;
+}
+.th-sm{
+	width:120px;
+}
+
+.th-xs{
+	width:60px;
+}
+
+.texto_transparente
+{
+	opacity:0;
+}
+
+.fondo-blanco
+{
+	background: #FFFFFF;
+}

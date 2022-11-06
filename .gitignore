@@ -1,0 +1,13 @@
+*.jpg
+*.svg
+*.gif
+*.backup
+/modelos/clsDatos.php
+/modelos/lib/fpdf
+/modelos/lib/html2pdf
+/modelos/lib/PHPExcel
+/vistas/formularios/admin
+/vistas/formularios/archivos
+/vistas/formularios/imagenes
+/vistas/reportes/generados
+/bd
