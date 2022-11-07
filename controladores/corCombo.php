@@ -119,8 +119,8 @@
 					$lobjCombo->fpSetCampo2("mar_nombre");
 					break;
 					
-				case "unidad_base": // Lista todas las unidades principales activas del sistema
-					$lobjCombo->fpSetSql("SELECT uni_codigo, uni_nombre FROM unidad WHERE uni_estatus = 'A' AND uni_tipo = '1' ORDER BY uni_nombre");
+				case "unidad": // Lista todas las unidades principales activas del sistema
+					$lobjCombo->fpSetSql("SELECT uni_codigo, uni_nombre FROM unidad WHERE uni_estado = 'A' ORDER BY uni_nombre");
 					$lobjCombo->fpSetCampo1("uni_codigo");
 					$lobjCombo->fpSetCampo2("uni_nombre");
 					break;

@@ -17,9 +17,6 @@
 	{
 		private $aiCodigo;
 		private $asNombre;
-		private $asAbreviatura;
-		private $aiTipo;
-		private $afFactor;
 		private $aaVariables;
 		private $asArchivo;
 		
@@ -28,9 +25,6 @@
 			parent::fpConectar();
 			$this->aiCodigo		="";
 			$this->asNombre		="";
-			$this->asAbreviatura="";
-			$this->aiTipo		="";
-			$this->afFactor		="";
 			$this->aaVariables	=array();
 			$this->asArchivo	="";
 		}
@@ -47,9 +41,6 @@
 			$lbBueno			= true;
 			$this->aiCodigo		= parent::fiVerificar_Numeros_Enteros($paFormulario["txtCodigo"]);
 			$this->asNombre		= parent::fsVerificar_Texto_Numeros_Simbolos($paFormulario["txtNombre"]);
-			$this->asAbreviatura= parent::fsVerificar_Texto_Numeros_Simbolos($paFormulario["txtAbreviatura"]);
-			$this->aiTipo		= parent::fiVerificar_Numeros_Enteros($paFormulario["cmbTipo"]);
-			$this->afFactor		= parent::fiVerificar_Numeros_Punto($paFormulario["txtFactor"]);
 			$this->asArchivo	= $paFormulario["txtArchivo"];
 			
 			// Sección que verifica la operacion a realizar así como también si los datos
@@ -106,7 +97,7 @@
 		public function fbBuscar()
 		{
 			$lbEnc=false;
-			$lsSql="SELECT uni_codigo, uni_nombre, uni_abreviatura, uni_tipo, uni_factor, uni_estatus
+			$lsSql="SELECT uni_codigo, uni_nombre, uni_estado
 					FROM unidad 
 					WHERE uni_codigo = '$this->aiCodigo'";
 			$lrTb=parent::frFiltro($lsSql);
@@ -114,10 +105,7 @@
 			{
 				$this->aaVariables["txtCodigo"]		=$laArreglo["uni_codigo"];
 				$this->aaVariables["txtNombre"]		=$laArreglo["uni_nombre"];
-				$this->aaVariables["txtAbreviatura"]=$laArreglo["uni_abreviatura"];
-				$this->aaVariables["cmbTipo"]		=$laArreglo["uni_tipo"];
-				$this->aaVariables["txtFactor"]		=$laArreglo["uni_factor"];
-				$this->aaVariables["cmbEstatus"]	=$laArreglo["uni_estatus"];
+				$this->aaVariables["cmbEstatus"]	=$laArreglo["uni_estado"];
 				$lbEnc=true;
 			}
 			parent::fpCierraFiltro($lrTb);
@@ -138,20 +126,16 @@
 				$lsCripterio = "AND uni_codigo != '$this->aiCodigo'";
 			}
 			$lbEnc=false;
-			$lsSql="SELECT uni_codigo, uni_nombre, uni_abreviatura, uni_tipo, uni_factor, uni_estatus
+			$lsSql="SELECT uni_codigo, uni_nombre, uni_estado
 					FROM unidad 
-					WHERE uni_tipo = '$this->aiTipo'
-					AND (UPPER(uni_nombre) = UPPER('$this->asNombre') OR UPPER(uni_abreviatura) = UPPER('$this->asAbreviatura'))
+					WHERE UPPER(uni_nombre) = UPPER('$this->asNombre')
 					$lsCripterio";
 			$lrTb=parent::frFiltro($lsSql);
 			if($laArreglo=parent::faProximo($lrTb))
 			{
 				$this->aaVariables["txtCodigo"]		=$laArreglo["uni_codigo"];
 				$this->aaVariables["txtNombre"]		=$laArreglo["uni_nombre"];
-				$this->aaVariables["txtAbreviatura"]=$laArreglo["uni_abreviatura"];
-				$this->aaVariables["cmbTipo"]		=$laArreglo["uni_tipo"];
-				$this->aaVariables["txtFactor"]		=$laArreglo["uni_factor"];
-				$this->aaVariables["cmbEstatus"]	=$laArreglo["uni_estatus"];
+				$this->aaVariables["cmbEstatus"]	=$laArreglo["uni_estado"];
 				$lbEnc=true;
 			}
 			parent::fpCierraFiltro($lrTb);
@@ -167,8 +151,8 @@
 		public function fbIncluir()
 		{
 			$lbHecho=false;
-			$lsSql="INSERT INTO unidad (uni_nombre, uni_abreviatura, uni_tipo, uni_factor) VALUES (
-					UPPER('$this->asNombre'), UPPER('$this->asAbreviatura'), '$this->aiTipo', '$this->afFactor')";
+			$lsSql="INSERT INTO unidad (uni_nombre) VALUES (
+					UPPER('$this->asNombre'))";
 			$lbHecho=parent::fbEjecutar($lsSql);
 			if($lbHecho === true)
 			{	
@@ -190,10 +174,7 @@
 		{
 			$lbHecho=false;
 			$lsSql="UPDATE unidad SET
-					uni_nombre		=UPPER('$this->asNombre'),
-					uni_abreviatura	=UPPER('$this->asAbreviatura'),
-					uni_tipo		='$this->aiTipo',
-					uni_factor		='$this->afFactor'
+					uni_nombre = UPPER('$this->asNombre')
 					WHERE uni_codigo = '$this->aiCodigo'";
 			$lbHecho=parent::fbEjecutar($lsSql);
 			if($lbHecho === true)
@@ -215,7 +196,7 @@
 		{
 			$lbHecho=false;
 			$lsSql="UPDATE unidad 
-					SET uni_estatus = 'I'
+					SET uni_estado = 'I'
 					WHERE uni_codigo  ='$this->aiCodigo'";
 			$lbHecho=parent::fbEjecutar($lsSql);
 			if($lbHecho === true)
@@ -237,7 +218,7 @@
 		{
 			$lbHecho=false;
 			$lsSql="UPDATE unidad 
-					SET uni_estatus = 'A'
+					SET uni_estado = 'A'
 					WHERE uni_codigo ='$this->aiCodigo'";
 			$lbHecho=parent::fbEjecutar($lsSql);
 			if($lbHecho === true)
@@ -271,16 +252,10 @@
 				$lsCripterio .= " uni_nombre LIKE UPPER('%".$paFormulario['txtFiltro_Nombre']."%')";
 			}
 			
-			if($paFormulario['cmbFiltro_Tipo'] != "-")
-			{
-				$lsCripterio .= $lsCripterio != '' ? ' AND ' : ' WHERE ';
-				$lsCripterio .= " uni_tipo = '".$paFormulario['cmbFiltro_Tipo']."'";
-			}
-			
 			if($paFormulario['cmbFiltro_Estado'] != "-")
 			{
 				$lsCripterio .= $lsCripterio != '' ? ' AND ' : ' WHERE ';
-				$lsCripterio .= " uni_estatus = '".$paFormulario['cmbFiltro_Estado']."'";
+				$lsCripterio .= " uni_estado = '".$paFormulario['cmbFiltro_Estado']."'";
 			}
 			
 			if($paFormulario['cmbFiltro_Numero_Filas']>0)
@@ -290,16 +265,11 @@
 				$lsLimite.= " OFFSET ".$pagina;
 			}
 
-			$lsSql="SELECT uni_codigo, uni_nombre, uni_abreviatura,
-					CASE uni_tipo
-						WHEN '1' THEN 'Principal'
-						WHEN '2' THEN 'Secundaria'
-					END AS uni_tipo,
-					CASE uni_estatus
+			$lsSql="SELECT uni_codigo, uni_nombre,
+					CASE uni_estado
 						WHEN 'A' THEN 'Activo'
 						WHEN 'I' THEN 'Inactivo'
-					END AS uni_estatus
-					
+					END AS uni_estado
 					FROM unidad 
 					$lsCripterio
 					ORDER BY uni_codigo
@@ -313,9 +283,7 @@
 				{
 					$this->aaVariables[$liI][0]=$laArreglo["uni_codigo"];
 					$this->aaVariables[$liI][1]=mb_convert_case($laArreglo["uni_nombre"], MB_CASE_TITLE, "UTF-8");
-					$this->aaVariables[$liI][2]=mb_convert_case($laArreglo["uni_abreviatura"], MB_CASE_TITLE, "UTF-8");
-					$this->aaVariables[$liI][3]=mb_convert_case($laArreglo["uni_tipo"], MB_CASE_TITLE, "UTF-8");
-					$this->aaVariables[$liI][4]=$laArreglo["uni_estatus"];
+					$this->aaVariables[$liI][2]=$laArreglo["uni_estado"];
 					$liI++;
 				}
 			}
@@ -345,16 +313,10 @@
 				$lsCripterio .= " uni_nombre LIKE UPPER('%".$paFormulario['txtFiltro_Nombre']."%')";
 			}
 			
-			if($paFormulario['cmbFiltro_Tipo'] != "-")
-			{
-				$lsCripterio .= $lsCripterio != '' ? ' AND ' : ' WHERE ';
-				$lsCripterio .= " uni_tipo = '".$paFormulario['cmbFiltro_Tipo']."'";
-			}
-			
 			if($paFormulario['cmbFiltro_Estado'] != "-")
 			{
 				$lsCripterio .= $lsCripterio != '' ? ' AND ' : ' WHERE ';
-				$lsCripterio .= " uni_estatus = '".$paFormulario['cmbFiltro_Estado']."'";
+				$lsCripterio .= " uni_estado = '".$paFormulario['cmbFiltro_Estado']."'";
 			}
 			
 			$lsSql="SELECT COUNT(uni_codigo) AS total
@@ -394,7 +356,7 @@
 			$lbHecho = false;
 			$lsSql="SELECT uni_codigo, uni_nombre
 					FROM unidad
-					WHERE uni_estatus = 'A' 
+					WHERE uni_estado = 'A' 
 					AND (UPPER(uni_nombre) LIKE UPPER('%".$psBusqueda."%')
 					OR uni_codigo = '".intval($psBusqueda)."')
 					ORDER BY uni_codigo";
@@ -438,16 +400,10 @@
 				$lsCripterio .= " uni_nombre LIKE UPPER('%".$paFormulario['txtFiltro_Nombre']."%')";
 			}
 			
-			if($paFormulario['cmbFiltro_Tipo'] != "-")
-			{
-				$lsCripterio .= $lsCripterio != '' ? ' AND ' : ' WHERE ';
-				$lsCripterio .= " uni_tipo = '".$paFormulario['cmbFiltro_Tipo']."'";
-			}
-			
 			if($paFormulario['cmbFiltro_Estado'] != "-")
 			{
 				$lsCripterio .= $lsCripterio != '' ? ' AND ' : ' WHERE ';
-				$lsCripterio .= " uni_estatus = '".$paFormulario['cmbFiltro_Estado']."'";
+				$lsCripterio .= " uni_estado = '".$paFormulario['cmbFiltro_Estado']."'";
 			}
 			
 			if($paFormulario['cmbFiltro_Numero_Filas']>0)
@@ -457,15 +413,11 @@
 				$lsLimite.= " OFFSET ".$pagina;
 			}
 
-			$lsSql="SELECT uni_codigo, uni_nombre, uni_abreviatura, uni_factor,
-					CASE uni_tipo
-						WHEN '1' THEN 'Principal'
-						WHEN '2' THEN 'Secundaria'
-					END AS uni_tipo,
-					CASE uni_estatus
+			$lsSql="SELECT uni_codigo, uni_nombre,
+					CASE uni_estado
 						WHEN 'A' THEN 'Activo'
 						WHEN 'I' THEN 'Inactivo'
-					END AS uni_estatus
+					END AS uni_estado
 					
 					FROM unidad 
 					$lsCripterio
@@ -479,11 +431,8 @@
 				while($laArreglo=parent::faProximo($lrTb))
 				{ 
 					$this->aaVariables[$liI]['liCodigo']		=$laArreglo["uni_codigo"];
-					$this->aaVariables[$liI]['lsTipo']			=$laArreglo["uni_tipo"];
 					$this->aaVariables[$liI]['lsNombre']		=$laArreglo["uni_nombre"];
-					$this->aaVariables[$liI]['lsAbreviatura']	=$laArreglo["uni_abreviatura"];
-					$this->aaVariables[$liI]['lsFactor']		=$laArreglo["uni_factor"];
-					$this->aaVariables[$liI]['lsEstatus']		=$laArreglo["uni_estatus"];
+					$this->aaVariables[$liI]['lsEstatus']		=$laArreglo["uni_estado"];
 					$liI++;
 				}
 			}

@@ -1,6 +1,6 @@
 <?php
 	/*
-	* visCaja.php
+	* visPendiente.php
 	* 		
 	* Copyright 2021 Hernández^3
 	* 		
@@ -15,9 +15,11 @@
 	session_start();
 	require_once("../../modelos/clsSeguridad.php");
 	require_once("../../modelos/clsTabla.php");
+	require_once("../../controladores/corCombo.php");
 	
 	$loSeguridad= new clsSeguridad();
 	$loTabla	= new clsTabla();
+	$loCombo	= new corCombo();
 	
 	// Obtener el nombre de la pagina que se esta visualizando
 	$lsArchivo = $_SERVER['SCRIPT_NAME'];
@@ -85,7 +87,7 @@
 		<section class="content">
 			<div class="container-fluid">
 				<!-- Inicio del formulario del filtro -->
-				<form method="POST" name="frmFiltro" id="frmFiltro" class="" target="_blank" action="../reportes/xlsCaja.php">
+				<form method="POST" name="frmFiltro" id="frmFiltro" class="" target="_blank" action="../reportes/xlsPendiente.php">
 					<input type="hidden" name="txtFiltro_Operacion" id="txtFiltro_Operacion" value="generar">
 					<input type="hidden" name="txtFiltro_Archivo" id="txtFiltro_Archivo" value="<?php print $lsArchivo; ?>">
 					<input type="hidden" name="txtFiltro_Pagina" id="txtFiltro_Pagina" value="1">
@@ -110,9 +112,19 @@
 						</div>
 						<div class="collapse navbar-collapse navbar-ex1-collapse show">
 							<div class="form-group row mt-1">
-								<label for="txtFiltro_Nombre" class="col-form-label col-sm-2 col-md-1 mt-1">Nombre:</label>
+								<label for="txtFiltro_Fecha" class="col-form-label col-sm-2 col-md-1 mt-1">Fecha:</label>
 								<div class="col-sm-3 mt-1">
-									<input type="text" class="form-control" name="txtFiltro_Nombre" id="txtFiltro_Nombre" onBlur="fsBorrar_Espacios(this,'texto_numero_simbolo'); fpVerificar_Caja();" onKeyPress="return fbSolo_Texto_Numeros_Simbolos(event,'cmbFiltro_Estado')" value="" placeholder="Nombre">
+									<div class="input-group mb-3">
+										<input class="form-control" type="text" name="txtFiltro_Fecha" id="txtFiltro_Fecha"  placeholder="Fecha"/>
+										<div class="input-group-append">
+											<span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+										</div>
+									</div>
+								</div>
+								
+								<label for="txtFiltro_Nombre" class="col-form-label col-sm-2 col-md-1 mt-1">Nombre:</label>
+								<div class="col-sm-4 mt-1">
+									<input type="text" class="form-control" name="txtFiltro_Nombre" id="txtFiltro_Nombre" onBlur="fsBorrar_Espacios(this,'texto_numero_simbolo'); fpVerificar_Pendiente();" onKeyPress="return fbSolo_Texto_Numeros_Simbolos(event,'cmbFiltro_Estado')" value="" placeholder="Nombre">
 								</div>
 								
 								<label for="cmbFiltro_Estado" class="col-form-label col-sm-2 col-md-1 mt-1">Estado:</label>
@@ -167,7 +179,7 @@
 					<!-- Inicio del contenido -->
 					<div class="modal-body">
 						<!-- Inicio del Formulario principal -->
-						<form method="POST" name="frmF" id="frmF" class="" action="../../controladores/corCaja.php">
+						<form method="POST" name="frmF" id="frmF" class="" action="../../controladores/corPendiente.php">
 							<input type="hidden" name="txtOperacion" id="txtOperacion" value="">
 							<input type="hidden" name="txtCodigo" id="txtCodigo" value="">
 							<input type="hidden" name="txtArchivo" id="txtArchivo" value="<?php print $lsArchivo; ?>">
@@ -175,7 +187,111 @@
 							<div class="form-group row">
 								<label for="txtNombre" class="col-form-label col-xs-12 col-sm-3 offset-sm-1 justify-content-center">Nombre:</label>
 								<div class="col-11 col-sm-6">
-									<input class="form-control" type="text" name="txtNombre" id="txtNombre" onBlur="fsBorrar_Espacios(this,'texto_numero_simbolo')" onKeyPress="return fbSolo_Texto_Numeros_Simbolos(event,'btnGuardar')" value="" placeholder="Nombre" maxlength="30">
+									<input class="form-control" type="text" name="txtNombre" id="txtNombre" onBlur="fsBorrar_Espacios(this,'texto_numero_simbolo')" onKeyPress="return fbSolo_Texto_Numeros_Simbolos(event,'txtCantidad')" value="" placeholder="Nombre" maxlength="30">
+								</div>
+								<div class="col-1 col-sm-1">
+									<span class="fa fa-asterisk text-danger"></span> 
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="txtCantidad" class="col-form-label col-xs-12 col-sm-3 offset-sm-1 justify-content-center">Cantidad:</label>
+								<div class="col-11 col-sm-6">
+									<input class="form-control" type="text" name="txtCantidad" id="txtCantidad" onBlur="fsBorrar_Espacios(this,'numero_decimales')" onKeyPress="return fbSolo_Numeros(event, this, 'cmbUnidad')" value="" placeholder="Cantidad" maxlength="30">
+								</div>
+								<div class="col-1 col-sm-1">
+									<span class="fa fa-asterisk text-danger"></span> 
+								</div>
+							</div> 
+
+							<div class="form-group row">
+								<label for="cmbUnidad" class="col-form-label col-12 col-sm-3 offset-sm-1">Unidad:</label>
+								<div class="col-11 col-sm-6">
+									<select class="form-control combos" name="cmbUnidad" id="cmbUnidad" onKeyPress="return fbCambiar_Foco(event,'txtObservacion')" >
+										<option value="">Seleccion un Valor...</option>
+									</select>
+								</div>
+								<div class="col-1 col-sm-1">
+									<span class="fa fa-asterisk text-danger"></span> 
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="txtObservacion" class="col-form-label col-xs-12 col-sm-3 offset-sm-1 justify-content-center">Observación:</label>
+								<div class="col-11 col-sm-6">
+									<input class="form-control" type="text" name="txtObservacion" id="txtObservacion" onBlur="fsBorrar_Espacios(this,'texto_numero_simbolo')" onKeyPress="return fbSolo_Texto_Numeros_Simbolos(event,'txtFecha_Estimada')" value="" placeholder="Observación" maxlength="30">
+								</div>
+								<div class="col-1 col-sm-1">
+									<span class="fa fa-asterisk text-danger"></span> 
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="txtFecha_Estimada" class="col-form-label col-xs-12 col-sm-3 offset-sm-1 justify-content-center">Fecha Estimada:</label>
+								<div class="col-11 col-sm-6">
+									<div class="input-group">
+										<input class="form-control" type="text" name="txtFecha_Estimada" id="txtFecha_Estimada"  placeholder="Fecha Estimada" onKeyPress="return fbCambiar_Foco(event,'cmbResponsable')"/>
+										<div class="input-group-append">
+											<span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-1 col-sm-1">
+									<span class="fa fa-asterisk text-danger"></span> 
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="cmbResponsable" class="col-form-label col-xs-12 col-sm-3 offset-sm-1">Responsable:</label>
+								<div class="col-11 col-sm-6">
+									<select class="form-control combos" name="cmbResponsable" id="cmbResponsable" onKeyPress="return fbCambiar_Foco(event,'cmbCondicion')">
+										<option value="">Seleccion un Valor...</option>
+										<option value="V">Vanessa</option>
+										<option value="O">Omer</option>
+										<option value="A">Ambos</option>
+									</select>
+								</div>
+								<div class="col-1 col-sm-1">
+									<span class="fa fa-asterisk text-danger"></span>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<label for="cmbCondicion" class="col-form-label col-xs-12 col-sm-3 offset-sm-1">Condición:</label>
+								<div class="col-11 col-sm-6">
+									<select class="form-control combos" name="cmbCondicion" id="cmbCondicion" onKeyPress="return fbCambiar_Foco(event,'txtFecha_Ejecucion')">
+										<option value="P">Pendiente</option>
+										<option value="R">Proceso</option>
+										<option value="C">Completado</option>
+										<option value="I">Incompleto</option>
+									</select>
+								</div>
+								<div class="col-1 col-sm-1">
+									<span class="fa fa-asterisk text-danger"></span>
+								</div>
+							</div>
+							
+							<hr>
+							<div class="form-group row">
+								<label for="txtFecha_Ejecucion" class="col-form-label col-xs-12 col-sm-3 offset-sm-1 justify-content-center">Fecha Ejecución:</label>
+								<div class="col-11 col-sm-6">
+									<div class="input-group">
+										<input class="form-control" type="text" name="txtFecha_Ejecucion" id="txtFecha_Ejecucion" placeholder="Fecha Ejecución" onKeyPress="return fbCambiar_Foco(event,'txtCosto')" disabled />
+										<div class="input-group-append">
+											<span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-1 col-sm-1">
+									<span class="fa fa-asterisk text-danger"></span> 
+								</div>
+							</div>
+
+
+							<div class="form-group row">
+								<label for="txtCosto" class="col-form-label col-xs-12 col-sm-3 offset-sm-1 justify-content-center">Costo:</label>
+								<div class="col-11 col-sm-6">
+									<input class="form-control" type="text" name="txtCosto" id="txtCosto" onBlur="fsBorrar_Espacios(this,'numero_decimales')" onKeyPress="return fbSolo_Numeros(event, this,'btnGuardar')" value="" placeholder="Cantidad" maxlength="12" disabled>
 								</div>
 								<div class="col-1 col-sm-1">
 									<span class="fa fa-asterisk text-danger"></span> 
@@ -224,7 +340,7 @@
 <!-- ./wrapper -->
 
 <?php require_once("./plantillas/javascript.php"); ?>
-<script language="javascript" src="./js/jsCaja.js"></script>
+<script language="javascript" src="./js/jsPendiente.js"></script>
 
 </body>
 </html>

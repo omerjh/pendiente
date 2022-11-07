@@ -213,7 +213,7 @@
 			$liCol	=count($this->aaTitulos);	//cantidad filas de la columna 
 			$liBot	=count($this->aaBotones);	//cantidad Botones 
 			$lsTabla.='
-					<table class="table table-bordered table-striped table-condensed table-responsive table-hover" id="'.$this->asId.'" name="'.$this->asId.'">
+					<table width="100%" class="table table-bordered table-striped table-condensed table-responsive table-hover" id="'.$this->asId.'" name="'.$this->asId.'">
 						<thead>
 							<tr class="'.$this->asFondo_Encabezado.'">';
 				for ($liJ=0;$liJ<$liCol;$liJ++)
@@ -255,6 +255,18 @@
 									if($this->aaBotones[$liB]['valor_condicion'] != '' )
 									{
 										if($paDatos[$liI][$this->aaBotones[$liB]['posicion_condicion']] == $this->aaBotones[$liB]['valor_condicion'])
+										{
+											$lbPintar=true;
+										}
+										else
+										{
+											$lbPintar=false;
+										}
+									}
+
+									if($this->aaBotones[$liB]['valor_condicion_multiple'] != '' )
+									{
+										if(strpos($this->aaBotones[$liB]['valor_condicion_multiple'], $paDatos[$liI][$this->aaBotones[$liB]['posicion_condicion']]) !== false)
 										{
 											$lbPintar=true;
 										}

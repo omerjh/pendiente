@@ -243,7 +243,7 @@
 							}
 							$lsSql="UPDATE usuario 
 									SET usu_intento_inicio='".$liIntento."', 
-									usu_fecha_intento_inicio ='NOW()'
+									usu_fecha_intento_inicio = NOW()
 									".$lsEstatus."
 									WHERE usu_nombre ='$this->asNombre'";
 							$lbHecho=parent::fbEjecutar($lsSql);

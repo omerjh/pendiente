@@ -115,15 +115,6 @@
 									<input type="text" class="form-control" name="txtFiltro_Nombre" id="txtFiltro_Nombre" onBlur="fsBorrar_Espacios(this,'texto_numero_simbolo'); fpVerificar_Unidad();" onKeyPress="return fbSolo_Texto_Numeros_Simbolos(event,'cmbFiltro_Tipo')" value="" placeholder="Nombre">
 								</div>
 								
-								<label for="cmbFiltro_Tipo" class="col-form-label col-sm-2 col-md-1 mt-1">Tipo:</label>
-								<div class="col-sm-3 col-md-2 mt-1">
-									<select class="form-control combos" name="cmbFiltro_Tipo" id="cmbFiltro_Tipo" onChange="fpListar()" onKeyPress="return fbCambiar_Foco(event,'cmbFiltro_Estado')" >
-										<option value="-">Todos</option>
-										<option value="1">Principal</option>
-										<option value="2">Secundario</option>
-									</select>
-								</div>
-								
 								<label for="cmbFiltro_Estado" class="col-form-label col-sm-2 col-md-1 mt-1">Estado:</label>
 								<div class="col-sm-3 col-md-2 mt-1">
 									<select class="form-control combos" name="cmbFiltro_Estado" id="cmbFiltro_Estado" onChange="fpListar()" onKeyPress="return fbCambiar_Foco(event,'cmbFiltro_Numero_Filas')" >
@@ -185,40 +176,6 @@
 								<label for="txtNombre" class="col-form-label col-12 col-sm-3 offset-sm-1 justify-content-center">Nombre:</label>
 								<div class="col-11 col-sm-6">
 									<input class="form-control" type="text" name="txtNombre" id="txtNombre" onBlur="fsBorrar_Espacios(this,'texto_numero_simbolo')" onKeyPress="return fbSolo_Texto_Numeros_Simbolos(event,'txtAbreviatura')" value="" placeholder="Nombre" maxlength="30">
-								</div>
-								<div class="col-1">
-									<span class="fa fa-asterisk text-danger"></span> 
-								</div>
-							</div>
-
-							<div class="form-group row">
-								<label for="txtAbreviatura" class="col-form-label col-12 col-sm-3 offset-sm-1 justify-content-center">Abreviatura:</label>
-								<div class="col-11 col-sm-6">
-									<input class="form-control" type="text" name="txtAbreviatura" id="txtAbreviatura" onBlur="fsBorrar_Espacios(this,'texto_numero_simbolo')" onKeyPress="return fbSolo_Texto_Numeros_Simbolos(event,'cmbTipo')" value="" placeholder="Abreviatura" maxlength="30">
-								</div>
-								<div class="col-1">
-									<span class="fa fa-asterisk text-danger"></span> 
-								</div>
-							</div>
-
-							<div class="form-group row">
-								<label for="cmbTipo" class="col-form-label col-12 col-sm-3 offset-sm-1">Tipo de Unidad:</label>
-								<div class="col-11 col-sm-6 combo">
-									<select class="form-control" name="cmbTipo" id="cmbTipo">
-										<option value="">Seleccione un valor...</option>
-										<option value="1">Principal</option>
-										<option value="2">Secundario</option>
-									</select>
-								</div>
-								<div class="col-1">
-									<span class="fa fa-asterisk text-danger"></span> 
-								</div>
-							</div>
-							
-							<div class="form-group row">
-								<label for="txtFactor" class="col-form-label col-12 col-sm-3 offset-sm-1 justify-content-center">Factor de Referencia:</label>
-								<div class="col-11 col-sm-6">
-									<input class="form-control" type="number" step=".01" name="txtFactor" id="txtFactor" onBlur="fsBorrar_Espacios(this,'texto_numero_simbolo')" onKeyPress="return fbSolo_Texto_Numeros_Simbolos(event,'btnGuardar')" value="" placeholder="Factor" maxlength="30" required>
 								</div>
 								<div class="col-1">
 									<span class="fa fa-asterisk text-danger"></span> 

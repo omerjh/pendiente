@@ -100,6 +100,19 @@
 						$laRespuesta['lsMensaje']	= "Disculpe, ocurrió un error al guardar los datos, por favor intente nuevamente";
 					}
 					break;
+				
+				case "finalizar":
+					if($loPendiente->fbFinalizar() === true)
+					{
+						$laRespuesta['lbEstado']	= true;
+						$laRespuesta['lsMensaje']	= "Se ha finalizado exitosamente";
+					}
+					else
+					{
+						$laRespuesta["lbEstado"]	= false;
+						$laRespuesta['lsMensaje']	= "Disculpe, ocurrió un error al guardar los datos, por favor intente nuevamente";
+					}
+					break;
 					
 				case "activar":
 					if($loPendiente->fbActivar() === true)

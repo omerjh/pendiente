@@ -296,12 +296,12 @@
 		public function fbModificar()
 		{
 			$liError	= 0;
-			$lbHecho	=false;
+			$lbHecho	=true;
 			parent::fpBegin();
 			$lsSql="UPDATE rol 
 					SET rol_nombre = UPPER('$this->asNombre')
 					WHERE rol_codigo ='$this->aiCodigo'";
-			$lbHecho=parent::fbEjecutar($lsSql);
+			parent::fbEjecutar($lsSql);
 
 			if($lbHecho === true)
 			{
@@ -326,6 +326,7 @@
 					}
 					$liK++;
 				}
+				
 				$liJ = 1;
 				while($this->aaServicios[$liJ]["Codigo_Servicio"] != "" and $lbHecho === true)
 				{

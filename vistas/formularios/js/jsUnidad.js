@@ -24,9 +24,6 @@ function fpCancelar()
 	loF.txtOperacion.value	= "";
 	loF.txtCodigo.value		= "";
 	loF.txtNombre.value		= "";
-	loF.txtAbreviatura.value= "";
-	loF.cmbTipo.value		= "";
-	loF.txtFactor.value		= "";
 	loF.cmbEstado.value		= "A";
 	$("#divFormulario").modal("hide");
 }
@@ -52,9 +49,6 @@ function fpBuscar(piCodigo)
 				//asignacion de valores
 				loF.txtOperacion.value	= 'modificar';
 				loF.txtNombre.value		= laResultado.laDatos.txtNombre;
-				loF.txtAbreviatura.value= laResultado.laDatos.txtAbreviatura;
-				loF.cmbTipo.value		= laResultado.laDatos.cmbTipo;
-				loF.txtFactor.value		= laResultado.laDatos.txtFactor;
 				loF.cmbEstado.value		= laResultado.laDatos.cmbEstatus;
 				setTimeout(() => { loF.txtNombre.focus(); }, 300);
 				$("#divFormulario").modal("show");
@@ -112,10 +106,6 @@ function fbValidar()
 	{
 		fpMostrar_Mensaje("Disculpe, el nombre de la unidad no puede estar en blanco",'a');
 	}
-	else if(loF.cmbTipo.value == "")
-	{
-		fpMostrar_Mensaje("Disculpe, debe seleccionar el tipo de unidad",'a');
-	}
 	else
 	{
 		lbBueno = true;
@@ -131,8 +121,8 @@ function fpListar(piPagina)
 	loFiltro.txtFiltro_Pagina.value = piPagina || 1;
 	let laDatos = {
 		txtOperacion		: 'listar',
-		lsTitulos			: 'Código,Nombre, Abreviación,Tipo,Estado,Opciones',
-		lsPorcentajes		: '10%,40%,15%,15%,10%,10%',
+		lsTitulos			: 'Código,Nombre,Estado,Opciones',
+		lsPorcentajes		: '10%,70%,15%,15%',
 		lsAlineacion		: 'right,left,left,left,right,left,left',
 		lsCapa_Listado		: 'divListado',
 		lsCapa_Paginado		: 'divPaginado',
@@ -161,7 +151,7 @@ function fpListar(piPagina)
 			color				: 'btn-danger',
 			tipo				: 'boton',
 			posicion_valor		: 0,
-			posicion_condicion	: 4,
+			posicion_condicion	: 2,
 			valor_condicion		: 'Activo'
 			
 		},
@@ -173,7 +163,7 @@ function fpListar(piPagina)
 			color				: 'btn-info',
 			tipo				: 'boton',
 			posicion_valor		: 0,
-			posicion_condicion	: 4,
+			posicion_condicion	: 2,
 			valor_condicion		: 'Inactivo'
 		}
 	}
